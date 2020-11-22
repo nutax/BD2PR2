@@ -31,21 +31,18 @@ def alphabet_filter(txt, replacement):
 
 
 lines = open("INPUT/InvertedIndex/index.txt", "r").read().split("\n")
-index_list = [line.split(",") for line in lines[:-1]]
+index = [line.split(",") for line in lines[:-1]]
 
-lines.clear()
-
-index = {}
-for i in index_list:
-        index[i[0]] = i[1]
 
 
 def BinarySearch(x):
     min = 0
     max = len(index)-1
+    mid = 0
+
     while min <= max:
 
-        mid = min + (max - min) // 2
+        mid = (max + min) // 2
 
         if index[mid][0] == x:
             return index[mid][1], True
@@ -68,9 +65,10 @@ while consulta != "-1" or len(consulta) == 0:
                 features[s] = [0, 0, 0]
         for s in stem:
                 if features[s][0] == 0:
-                        if s in index:
+                        ptr, found = BinarySearch(s)
+                        if found:
                                 features[s][0] = 1
-                                features[s][1] = index[s]
+                                features[s][1] = ptr
                                 features[s][2] += 1
                         else:
                                 features[s][0] = -1
